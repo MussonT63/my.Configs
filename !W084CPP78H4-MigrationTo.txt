@@ -1,0 +1,419 @@
+.LOG
+
+This file: !W084CPP78H4-MigrationTo.txt
+       T60846011WT3_(Old_Computer)_Configuration_Notes.txt
+====ToDo Yet===================================================
+
+.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+
+====Just before turninig in old computer=======================
+    Remove bitLocker from old computer's drive.
+        search for Manage BitLocker in the taskbar,
+        select the encrypted drive,
+        click Turn off BitLocker
+    Remove NVMe drive from old computer and verify usb access.
+    Return old Computer.
+====Later=====================================================
+    I should be able to add more ways to auth to Windows Hello and it should then NOT use my phone...
+    Install unix (etc) binaries for windows;
+        grep, diff, curl, tidy, show, jq
+        Link curl to it's source?
+    Fix vimfiles/_vimrc after PS/Terminal is set up
+    Install Strawberry perl
+    Configure VScode, lint, git
+    PowerShell help - update (from an Admin Terminal window Ctrl-Shift-Click)
+        update-help -force -verbose
+        Syntax on the '{0}' -f $var way of doing things.
+        https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators?view=powershell-7.4
+===============================================================
+
+====Done====Done====Done====Done====Done====Done====Done====Done====
+====Done====Done====Done====Done====Done====Done====Done====Done====
+====Done====Done====Done====Done====Done====Done====Done====Done====
+
+====Didn't Need to Do - Start==================================
+    Calendar sync is done in the Web Outlook interface, so shouldn't need to be done again...! :)
+        https://www.alphr.com/sync-outlook-calendar-google-calendar/
+            Sync Outlook Calendar to Google Calendar using Google
+
+    Change the path to the following line in the profile.ps1 file
+        My PS profile just worked once OneDrive finished synncing... :)
+        Get-ChildItem "C:\Users\MussonT\OneDrive - State of Michigan DTMB\Documents\WindowsPowerShell\profile\*.ps1" | ForEach-Object { . $_ }
+====Didn't Need to Do - End====================================
+
+Done-2026_04_06 | 01.RequestLocal_AdminRights_ID#23951
+    https://miesrp.state.mi.us/ARRS/NewRequest
+
+    Here is what I put in for my elevated rights:
+    I need to have administrator rights on my machine in order to test and support my customers by installing applications that would aid in the remediation of faults in applications that I support for different customers.
+    I need to be able to control the configuration of my workstation to run WSL for Ansible/Ansible Automation Platform (I'm the AAP SME...).
+    I also need to be able to add and remove applications that my customers need to have tested before they are deployed.
+    In order to support my end customers I NEED to have the full functionality of my machine to perform my duties.
+    I also work remotely and would need to have the capability to fix an issue when not in the office if/when an issue arises with hardware or patches if those issues do occur.
+
+Done-2026_04_01 | 02.Connect_To_VPN
+    Use SecurID on old PC and MFA on new PC!
+
+Done-2026_04_06 | 04.Create_And_Map_Drive_G
+    To see Environement Variables:
+      Get-ChildItem Env:
+      ll Env:
+    To see the OneDrive var
+      Get-ChildItem Env:OneDrive
+      ll Env:\USERPROFILE
+    or
+      $Env:OneDrive
+
+    To See the contents of the OneDrive\Documents dir:
+      ls "$Env:OneDrive\Documents\"
+
+    Create a dir in OneDrive\Documents\ to hold all my specific work like my
+        Grimoire (used to be "MyCode"), My.Configs, my Git repos, /usr/bin/ etc.
+
+    To map a drive to a Dir in OneDrive:
+      Create and Share a Dir in "$Env:OneDrive\Documents\"
+        I created "$Env:OneDrive\Documents\MyGrimoire\"
+        Right Click the new MyGrimoire dir
+          > Properties
+          > Sharing tab
+          > Share...
+          > Set the user and permissions
+          > Share
+          > Copy the network path
+          Grimoire (file://T60846011WT3/Grimoire)
+      Set up batch file to map the drive (this is what I tested with using MyGrimoire):
+            cls
+            net use g: /del
+            pause
+            net use g: "\\T60846011WT3\Grimoire"
+            pause
+
+Done-2026_04_06 | 04.MapG_Drive_To_OneDrive_SubDir
+    cls
+    net use g: /del
+    pause
+    ::net use g: "\\T60846011WT3\Grimoire" /PERSISTENT:YES
+    ::net use g: "\\W084CPP78H4\Grimoire" /PERSISTENT:YES
+    pause
+
+    :: Note, this is the in files:
+        MapG_Drive-NewPC.bat
+        MapG_Drive-OldPC.bat
+
+Done-2026_04_06 | 05.Map_Drive_Between_Workstations_For_Data_Migration
+
+Done-2026_04_06 | 11.Install-Chrome
+Done-2026_04_06 | 12.Install-Vim
+    Start the Installer with Administrator...
+    These are the non-default selections:
+        Vim with all enhancements
+        Remap a few keys
+        Right: popup menu, Left: select mode (Windows)
+
+Done-2026_04_06 | 13.Install-LogitecOptions+
+Done-2026_04_06 | 14.Install-IrfanView
+
+Done--2026/04/06, 12:41:24 | 21.Configure-Vim.txt
+    # Rename C:\Users\MussonT\vimfiles to .orig
+    # New-Item -ItemType SymbolicLink -Path C:\Users\MussonT\vimfiles -Target G:\My.Configs\vimfiles
+                    # ^^^-Path to what is being created!      ^^^-Target that exists before linking!
+    # New-Item -ItemType SymbolicLink -Path "G:\My.Configs\vimfiles\vimrc" -Target "G:\My.Configs\vimfiles\vimrc.txt"
+
+Done-2026/04/06 | Configure Windows Explorer to match old PC.
+
+Done-2026/04/06, 13:24:48
+    Make the VPN client show in the system tray...
+        right click the Taskbar, settings
+        Other system tray icons
+        turn on VPN client
+
+2026/04/06, 13:28:20
+    Make Chrome Default
+        Win+i, Apps, Google Chrome, Make Default button at top
+
+2026/04/06, 14:02:43
+    Install KeePass and get it working
+
+2026/04/06, 14:12:06
+    copy host file contents
+
+2026/04/07, 08:22:04
+    08.ConfigureMM_and_StartupBits.txt
+        :: "C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE"
+        "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Outlook (classic).lnk"
+        "C:\Users\MussonT\AppData\Local\Microsoft\WindowsApps\ms-teams.exe"
+        "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Cisco\Cisco Secure Client\Cisco Secure Client.lnk"
+
+2026/04/07, 09:39:19
+    Set-ExecutionPolicy Bypass (run as Administrator)
+
+2026/04/07, 09:46:37
+    Install the most current version of PowerShell (7.x)
+        winget install --id Microsoft.PowerShell --source winget
+
+2026/04/07, 09:52:19
+    Install Windows Terminal Using winget
+        winget install --id Microsoft.WindowsTerminal -e
+
+2026/04/07, 10:12:43
+    Couldn't figure out how to:
+        # New-Item -ItemType SymbolicLink -Path "G:\My.Configs\vimfiles\vimrc" -Target "G:\My.Configs\vimfiles\vimrc.txt"
+    Without this error:
+        New-Item: Administrator privilege required for this operation.
+    so, I just copied vimrc.txt to vimrc   :(
+
+2026/04/07, 11:44:32
+    Get Terminal set up comfortably
+
+2026/04/07, 12:15:36
+    Install git from https://git-scm.com/install/windows
+
+2026/04/07, 12:35:05
+    "change windows 11 explorer right click to work like windows 10" Google Search or
+        Shift+Right Click does this!
+
+2026/04/07, 13:42:17 Start
+    ADUC and GP manager - Install
+        Get-WindowsCapability -Online | ? { $_.Name -match 'ActiveDirectory|GroupPolicy' -and $_.State -ne 'Installed' } | Add-WindowsCapability -Online
+2026/04/07, 14:35:20 Finished
+
+2026/04/09, 10:16:52
+    Visio - office.com, sign in, Apps, All Apps, MS Office, Install Visio
+
+2026/04/09, 10:26:13
+    Install Acrobat Reader (from software Center)
+
+4/9/2026 10:31 AM
+    Tim: Does it matter what sequence I install OpenSSH, WSL, VScode?
+    Greg: Not really... Make sure you go into your app settings and disable the already installed ssh client though...
+
+2026/04/09, 10:46:33
+    VScode - install, get the how in here!
+        winget search 'visual studio code'
+            The pick the one you want...
+        winget install --id=Microsoft.VisualStudioCode --scope=user
+
+2026/04/09, 11:20:05
+    export working ubuntu environment <<< Google Search
+        wsl --list
+        wsl --export Ubuntu-24.04 my_Ubuntu-24.04_backup.tar.gz
+
+2026/04/09, 11:40:30
+    how to backup vscode settings
+    Open VScode, Ctrl + Shift + P, Open User Settings (JSON)
+        cp $env:APPDATA\Code\User\settings.json user.settings.json
+
+2026/04/09, 13:52:33
+    Backup 'windows terminal settings.json'
+    cp $env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json WindowsTerminal.settings.json
+
+2026/04/10, 08:10:05
+    OpenSSH
+        winget install --id=Microsoft.OpenSSH.Preview
+        put openssh in path early
+        Old = C:\WINDOWS\System32\OpenSSH\. 
+        New = C:\Program Files\OpenSSH\
+            # OR
+                # Remove-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
+                # So only one version of OpenSSH is available...
+        winget list | sls SSH
+
+2026/04/10, 09:40:54
+    copy the contents of $Env:\USERPROFILE\.ssh from old to new
+        And I was able to automagically 'ssh $cmp.app1' !
+
+2026/04/10, 09:41:10 Path as of now:
+    How to edit the Path:
+        Right click Start, Settings, Search for environment, Environment Variables... button
+        C:\usr\bin;
+        C:\Program Files\PowerShell\7\;
+        C:\Program Files\Git\cmd;
+        C:\Program Files\OpenSSH\;
+        %SystemRoot%\system32;
+        %SystemRoot%;
+        C:\Program Files (x86)\RSA SecurID Token Common;
+        C:\Program Files\dotnet\;
+        %SystemRoot%\System32\Wbem;
+        C:\Program Files\Teradata\Client\20.00\bin;
+        C:\Program Files (x86)\Teradata\Client\20.00\bin;
+        %SYSTEMROOT%\System32\OpenSSH\;
+        %SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;
+
+====Start WSL==================================================
+    WSL (using Ubuntu) Start here: https://dev.azure.com/SOM-CTO/PS-EVS-EnterpriseAnsible/_wiki/wikis/PS-EVS-EnterpriseAnsible.wiki/1197/wsl-Ubuntu-24.04-Configuration
+2026/04/10, 13:24:07 - Start
+    https://learn.microsoft.com/en-us/windows/wsl/install
+        In an (PS) Admin Terminal
+            wsl --install
+2026/04/10, 13:26:32 - Done
+    Reboot
+2026/04/10, 13:31:35 - Done
+    a second time to install ubuntu
+        wsl --install
+            Asks for UID/PW
+        https://learn.microsoft.com/en-us/windows/wsl/setup/environment#set-up-your-linux-username-and-password
+2026/04/10, 13:38:54 - Done
+
+2026/04/10, 13:39:28
+    Start configuring WSL
+        Add ~/.timrc
+        Add this to ~/.bashrc
+        if [ -f ~/.timrc ]; then
+             .  ~/.timrc
+        fi
+
+2026/04/10, 14:23:30
+    Configure WSL
+        Starting with this, but it has way too much junk...
+        https://dev.azure.com/SOM-CTO/PS-EVS-EnterpriseAnsible/_wiki/wikis/PS-EVS-EnterpriseAnsible.wiki/1197/wsl-Ubuntu-24.04-Configuration
+    # Change http to https
+    sudo sed -i 's|URIs: http://|URIs: https://|g' /etc/apt/sources.list.d/ubuntu.sources
+    sudo apt update -y && sudo apt upgrade -y
+
+    # add ppa repos for git and ansible
+    sudo add-apt-repository --yes ppa:git-core/ppa
+
+    sudo add-apt-repository --yes --update ppa:ansible/ansible
+    sudo apt update -y && sudo apt upgrade -y
+
+    2026/04/10, 14:31:42
+    # Install some tools:
+    sudo apt install -y \
+       ansible \
+       bind9-dnsutils \
+       net-tools \
+       podman \
+       python3-pip \
+       tree \
+       unzip
+
+2026/04/10, 14:46:45
+    Fix the /etc/wsl.conf file (need su)
+        cat <<EOF>>/etc/wsl.conf
+
+        [automount]
+        root = /
+        options = "metadata,dmask=022,fmask=033"
+        EOF
+    'cat /etc/os-release' to see os-release info
+====End   WSL==================================================
+
+2026/04/10
+    Cleanup, then import Chrome bookmarks
+
+2026/04/13, 09:58:42 - start
+    webex (soft phone) - install from software Center
+        Verify Login & Settings
+2026/04/13, 10:21:34 - done
+
+2026/04/13, 14:37:05
+    Use new Dock at home office and start using new comptuer with external monitors.
+
+2026/04/14, 08:26:55
+    add shortcut in Morpheus dir to : \\HCS084ISLNNIST.som.ad.state.mi.us\CMP-BACKUP
+
+2026/04/14, 08:39:46
+    Google: "robocopy to copy all files and folders"
+    https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/robocopy
+    robocopy "C:\Source" "D:\Destination" /MIR /MT:16 /V /R:3 /W:5
+
+2026/04/14, 14:33:38
+    Copy in C:\Users\MussonT\.wslconfig so git clone actually works!
+    Copy in WSL:/home/mussont/.gitconfig
+
+2026/04/14, 15:10:35
+    Cloning Repos "G:\!.NewWorkstationSetup\wsl\RepoBuildOut.sh"
+        myNewDir=~/git/core
+        git clone git@ssh.dev.azure.com:v3/SOM-CTO/PS-EVS-EnterpriseAnsible/aap-CaC-core
+        git clone git@ssh.dev.azure.com:v3/SOM-CTO/PS-EVS-EnterpriseAnsible/ee-build-core
+        git clone git@ssh.dev.azure.com:v3/SOM-CTO/PS-EVS-EnterpriseAnsible/aap-ocp-project-rebuild
+
+        myNewDir=~/git/ha
+        git clone git@ssh.dev.azure.com:v3/SOM-CTO/PS-EVS-CloudAutomation/aap-CaC-hosting_automation
+        git clone git@ssh.dev.azure.com:v3/SOM-CTO/PS-EVS-CloudAutomation/ee-build-ha
+        git clone git@ssh.dev.azure.com:v3/SOM-CTO/PS-EVS-CloudAutomation/aap-ha-inventory
+        git clone git@ssh.dev.azure.com:v3/SOM-CTO/PS-EVS-CloudAutomation/aap-ha-misc
+
+        myNewDir=~/git/eot
+        git clone git@ssh.dev.azure.com:v3/SOM-CTO/PS-EVS-EnterpriseAnsible/EOT-aap-CaC-eot
+        git clone git@ssh.dev.azure.com:v3/SOM-CTO/PS-EVS-EnterpriseAnsible/EOT-ee-build-eot
+        git clone git@ssh.dev.azure.com:v3/SOM-CTO/PS-EVS-EnterpriseAnsible/EOT-inventory-eot
+        git clone git@ssh.dev.azure.com:v3/SOM-CTO/PS-EVS-EnterpriseAnsible/EOT-misc-eot
+
+        tree -d
+
+2026/04/16, 07:10:24
+	New Printer
+		Add-Printer -ConnectionName \\HCV171PRPFPAA07\DTMB_F1PEB6_RI2500
+
+2026/04/16, 10:13:21
+	Link my ps profile dir to my repo
+	New-Item -ItemType SymbolicLink -Target "G:\git\Tims-bits\PSprofile\" -Path "C:\Users\MussonT\OneDrive - State of Michigan DTMB\Documents\PowerShell\profile"
+				   # ^^^-Target that exists before linking!  ^-Path to what is being created!      
+
+2026/04/16, 10:22:53
+	Copied %UserProfile%.gitconfig
+
+2026/04/16, 11:25:37
+    VScode configuration:
+        VScode.user.settings.json < check what I want to migrate
+        Extensions: do this from the Extension icon
+            WSL (check out %UserProfile%\.vscode\extensions)
+                To get WSL Extension to work:
+                    sudo apt-get update && sudo apt-get install wget ca-certificates
+                      https://code.visualstudio.com/docs/remote/troubleshooting#_wsl-tips
+            Vim
+            PowerShell (after starting code from a ps windows)
+
+2026/04/16, 13:17:17 # Trying to get ansible-navigator installed
+    sudo apt install -y \
+        ansible \
+        ansible-lint \
+        ansible-navigator
+             # failed on navigator... :(
+
+RH suggested using RHEL image for WSL, so switching.
+
+2026/04/17, 08:27:55
+    Shifting to prebuilt RHEL image for WSL...
+        https://developers.redhat.com/articles/2025/05/20/getting-started-rhel-windows-subsystem-linux
+            Option 2: Download a prebuilt RHEL image for WSL
+        wsl --import RHEL-10-prebuilt .\WSL\RHEL10prebuilt .\Downloads\rhel-10.0-x86_64-wsl2.tar.gz
+        wsl --list --verbose
+
+        wsl -d RHEL-10-custom               # Start without changing default
+            # or
+        wsl --set-default RHEL-10-prebuilt  # Set default < Did this Option
+
+        wsl --list --verbose
+        wsl
+
+        cat /etc/redhat-release
+
+2026/04/17, 10:19:04
+    run the command in "G:\!.NewWorkstationSetup\wsl\WSL_Global_Registration.txt" to License!
+
+2026/04/20, 08:43:31
+    Files from WSL - things that are not included in the Repos...
+        Can get from backup if needed... (my_Ubuntu-24.04_backup.tar.gz)
+
+2026/04/20, 08:48:01
+    Configure VScode...
+        done Vim Extension
+	done WSL Extension
+        done ansible Extension
+	done move Explorer to right
+
+2026/04/24, 08:55:05
+    WSL - Use git-prompt.sh (instead of OhMyPosh) to configure my prompt to show 1.branch and 2.repo
+2026/04/27, 10:48:47
+    Install the Azure CLI
+    winget install -e --id Microsoft.AzureCLI
+        az login --allow-no-subscriptions
+	    Looks like I didn't need this: Install-Module -Name Az
+
+2026/05/13, 09:54:22
+    Chrome menu bar
+        chrome://settings/appearance - toggle "Show bookmarks bar" on
+        Ctrl+Shift+B to hide the bar in all 'non-new' tab.
+
