@@ -1,0 +1,27 @@
+<meta http-equiv=refresh content=3;>
+
+# pathogen#infect tells vim to load everything in ~/vimfiles/bundle/
+# to get vim-pathogen: https://github.com/tpope/vim-pathogen
+  at a command prompt in ~\vimfiles\bundle
+    git clone https://github.com/tpope/vim-pathogen.git
+
+# To get NERDTree: https://github.com/preservim/nerdtree
+  at a command prompt in ~\vimfiles\bundle
+    git clone https://github.com/preservim/nerdtree.git
+
+# Link my vimfiles from My.Configs to my profile.
+  New-Item -Type SymbolicLink -Name vimfiles -Path C:\Users\MussonT\ -Value C:\usr\My.Configs\vimfiles\
+
+# Link my vimfiles from My.Configs to my nvim location.
+  New-Item -Type SymbolicLink -Name nvim -Path C:\Users\MussonT\AppData\Local\ -Value C:\usr\My.Configs\vimfiles\
+
+# Link my vimrc (for gvim) to init.vim (for neovim)
+  New-Item -Type SymbolicLink -Name init.vim -Path C:\usr\My.Configs\vimfiles\ -Value C:\usr\My.Configs\vimfiles\vimrc
+
+
+
+vim-plug - A minimalist Vim plugin manager.
+  https://github.com/junegunn/vim-plug
+  grabs things dynamically
+
+https://vimhelp.org/vim_faq.txt.html
