@@ -1,3 +1,6 @@
+
+New-Item -ItemType SymbolicLink -path C:\Users\MussonT\vimfiles -Target C:\usr\my.Configs\vimfiles\
+
 New Computer:
 # New-Item -ItemType SymbolicLink -Path G:\My.Configs\vimfiles\vimrc -Target G:\My.Configs\vimfiles\vimrc.txt
 				# ^^^-Path to what is being created!     ^^^-Target that exists before linking!
