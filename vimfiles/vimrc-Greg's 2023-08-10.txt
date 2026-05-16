@@ -1,0 +1,284 @@
+﻿let mapleader = " "
+set timeoutlen=500
+
+set fileformat=unix
+set fileformats=unix,dos
+autocmd BufNewFile,BufRead *.hta :set ft=html
+autocmd BufNewFile,BufRead *.vssettings :set ft=html
+autocmd BufNewFile,BufRead *.psm1 :set ft=ps1
+autocmd BufNewFile,BufRead *.nsh :set ft=zsh
+autocmd FileType md setlocal shiftwidth=2 tabstop=2
+autocmd FileType markdown setlocal shiftwidth=2 tabstop=2
+autocmd FileType xml setlocal shiftwidth=2 tabstop=2
+autocmd FileType markdown setlocal spell
+
+if has("autocmd")
+    "Source the vimrc file after saving it
+    " autocmd bufwritepost $MYVIMRC source $MYVIMRC
+    autocmd BufEnter * silent! lcd %:p:h
+endif
+
+" augroup numbertoggle
+"   autocmd!
+"   autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+"   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+" augroup END
+
+set nocompatible
+"source $VIMRUNTIME/vimrc_example.vim
+"source $VIMRUNTIME/mswin.vim
+"behave mswin
+
+"set diffexpr=MyDiff()
+"function! MyDiff()
+"    let opt = '-a --binary '
+"    if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+"    if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+"    let arg1 = v:fname_in
+"    if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+"    let arg2 = v:fname_new
+"    if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+"    let arg3 = v:fname_out
+"    if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+"    let eq = ''
+"    if $VIMRUNTIME =~ ' '
+"        if &sh =~ '\<cmd'
+"            let cmd = '""' . $VIMRUNTIME . '\diff"'
+"            let eq = '"'
+"        else
+"            let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+"        endif
+"    else
+"        let cmd = $VIMRUNTIME . '\diff'
+"    endif
+"    silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+"endfunction
+
+" This setting has terrible side effects when neovim is used as the editor
+" for git in the VSCode terminal. :(
+set termguicolors
+
+set hidden
+set splitright
+set splitbelow
+set startofline
+set tabstop=4
+set shiftwidth=4
+set shiftround
+set softtabstop=4
+set expandtab
+set sidescroll=1
+set linebreak
+set breakat=\ ^I!*+;:,./?"
+set autoindent
+set smartindent
+set showmatch
+set incsearch
+set virtualedit=all
+set number
+set numberwidth=6
+set clipboard=unnamed
+set ignorecase
+set smartcase
+set nowrap
+set textwidth=0
+set scrolloff=0
+set wildmenu
+set history=200
+set belloff=all
+set cursorline
+
+" setup my directories for swap, undo, etc.
+if !isdirectory($HOME . "/vimfiles/.vimswap")
+    call mkdir($HOME . "/vimfiles/.vimswap", "p")
+endif
+set directory=$HOME/vimfiles/.vimswap
+
+if !isdirectory($HOME . "/vimfiles/.vimundo")
+    call mkdir($HOME . "/vimfiles/.vimundo", "p")
+endif
+set undodir=$HOME/vimfiles/.vimundo
+
+if !isdirectory($HOME . "/vimfiles/.vimbackup")
+    call mkdir($HOME . "/vimfiles/.vimbackup", "p")
+endif
+set backupdir=$HOME/vimfiles/.vimbackup
+
+" set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%02p%%]\ [LEN=%04L]
+" Status line
+set laststatus=2
+set statusline=
+set statusline+=%-3.3n\ " buffer number
+set statusline+=%f\ " filename
+set statusline+=%h%m%r%w " status flags
+set statusline+=\[%{strlen(&ft)?&ft:'none'}] " file type
+set statusline+=%= " right align remainder
+set statusline+=%03.3b,0x%-8B " character value
+set statusline+=%-14(%l,%c%V%) " line, character
+set statusline+=%02p%% " file position
+
+if !has("gui_win32")
+    colorscheme industry
+else
+    colorscheme zenburn
+    set guifont=Cousine_NF:h14,SauceCodePro_NF:h14:cANSI:qDRAFT,Source_Code_Pro:h14,Consolas:h14
+endif
+
+" I'm not really sure why this was here but it really breaks `gf`.
+"set isfname+=32
+
+inoremap jj                 <ESC>
+inoremap <C-;>              <ESC>
+nmap <silent> <C-RIGHT>     :bn<CR>
+"nmap <silent> <C-S-L>       :bn<CR>
+nmap <silent> <C-L>         :bn<CR>
+nmap <silent> <C-LEFT>      :bp<CR>
+nmap <silent> <M-RIGHT>     :bn<CR>
+nmap <silent> <M-LEFT>      :bp<CR>
+"nmap <silent> <C-S-H>       :bp<CR>
+nmap <silent> <C-H>         :bp<CR>
+nmap <silent> j             gj
+nmap <silent> k             gk
+nmap <silent> <C-F4>        :bd<CR>
+"nmap <silent> <SPACE>       <pagedown>
+"nmap <silent> <S-SPACE>     <pageup>
+nnoremap <silent> <esc> :noh<cr><esc>
+
+" Move visual selection 
+vnoremap J :m '>+1<cr>gv=gv 
+vnoremap K :m '<-2<cr>gv=gv
+
+"This one checks to see if the first line has .LOG by itself and if so,
+"adds a dts to the end - good for keeping notes about what happens when.
+"Windows Notepad has this behaviour by default...
+au BufReadPost * call InsertCurrentTimestamp()
+function! InsertCurrentTimestamp()
+    if matchstr(getline(1), "^\.LOG$") != ''
+        exe append(line("$"), strftime("%Y %b %d, %H:%M:%S"))
+        exe append(line("$"), "")
+        exe "normal L 0"
+    endif
+endfun
+
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set norelativenumber
+  else
+    set relativenumber
+  endif
+endfunc
+
+nnoremap <silent> <leader>nt :call NumberToggle()<cr>
+nnoremap <silent> <leader>rn :call NumberToggle()<cr>
+nnoremap <silent> <leader>ya :%y<cr>
+
+" This mapping is to clean up PowerShell Transcript files that contain
+" inconsistent line endings and end up with ^M scattered all over the
+" place
+nnoremap <silent> <leader>df :e ++ff=dos<cr>
+
+function! WordWrapToggle()
+  if(&wrap == 1)
+    set nowrap
+  else
+    set wrap
+  endif
+endfunc
+nnoremap <silent> <leader>w :call WordWrapToggle()<cr>
+nnoremap <silent> <leader>ev :split $MYVIMRC<cr>
+nnoremap <silent> <leader>sv :source $MYVIMRC<cr>
+
+function! <SID>StripTrailingWhitespaces()
+  " Preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " Do the business:
+  %s/\s\+$//e
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
+endfunction
+nnoremap <silent> <F5> :call <SID>StripTrailingWhitespaces()<CR>
+
+function! Preserve(command)
+  " Preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " Do the business:
+  execute a:command
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
+endfunction
+
+nmap <silent> <leader>$ :silent call Preserve("%s/\\s\\+$//e")<CR>
+nmap <silent> <leader>= :silent call Preserve("normal gg=G")<CR>
+
+let g:gtfo#terminals = { 'win': 'powershell -NoLogo -NoExit -NoProfile -Command' }
+
+" Adding these convenience mappings because I can't see to break myself of the
+" habit
+" Use CTRL-S for saving, also in Insert mode
+noremap <C-S>		:update<CR>
+vnoremap <C-S>		<C-C>:update<CR>
+inoremap <C-S>		<C-O>:update<CR>
+if has("clipboard")
+    " CTRL-X and SHIFT-Del are Cut
+    vnoremap <C-X> "+x
+    vnoremap <S-Del> "+x
+
+    " CTRL-C and CTRL-Insert are Copy
+    vnoremap <C-C> "+y
+    vnoremap <C-Insert> "+y
+
+    " CTRL-V and SHIFT-Insert are Paste
+    map <C-V>		"+gP
+    map <S-Insert>		"+gP
+
+    cmap <C-V>		<C-R>+
+    cmap <S-Insert>		<C-R>+
+endif
+
+" Pasting blockwise and linewise selections is not possible in Insert and
+" Visual mode without the +virtualedit feature.  They are pasted as if they
+" were characterwise instead.
+" Uses the paste.vim autoload script.
+" Use CTRL-G u to have CTRL-Z only undo the paste.
+
+if 1
+    exe 'inoremap <script> <C-V> <C-G>u' . paste#paste_cmd['i']
+    exe 'vnoremap <script> <C-V> ' . paste#paste_cmd['v']
+endif
+
+imap <S-Insert>		<C-V>
+vmap <S-Insert>		<C-V>
+
+" Use CTRL-Q to do what CTRL-V used to do
+noremap <C-Q>		<C-V>
+
+" NERDTree config
+nnoremap <silent> <leader>f     :NERDTreeToggle<CR>
+nnoremap <silent> <leader>v     :NERDTreeFind<CR>
+let NERDTreeQuitOnOpen=1
+let g:NERDTreeWinSize=50
+let NERDTreeShowHidden=1
+let NERDTreeMinimalUI=1
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+
+
+" enable vim-pathogen
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+execute pathogen#infect()
+
+" Playing with Night Owl theme
+syntax enable
+colorscheme night-owl
+" To enable the lightline theme
+let g:lightline = { 'colorscheme': 'nightowl' }
+" end Night Owl theme
+
+" vim:syntax=vim:filetype=vim:
+

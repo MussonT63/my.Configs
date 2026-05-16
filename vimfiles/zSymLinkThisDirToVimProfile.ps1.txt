@@ -1,0 +1,26 @@
+New Computer:
+# New-Item -ItemType SymbolicLink -Path G:\My.Configs\vimfiles\vimrc -Target G:\My.Configs\vimfiles\vimrc.txt
+				# ^^^-Path to what is being created!     ^^^-Target that exists before linking!
+
+# Rename C:\Users\MussonT\vimfiles to .orig
+# New-Item -ItemType SymbolicLink -Path C:\Users\MussonT\vimfiles -Target G:\My.Configs\vimfiles
+				# ^^^-Path to what is being created!      ^^^-Target that exists before linking!
+
+
+
+
+
+Old Computer:
+# New-Item -ItemType SymbolicLink -Path C:\usr\My.Configs\vimfiles\vimrc -Target C:\usr\My.Configs\vimfiles\vimrc.txt
+				# ^^^-Path to what is being created!     ^^^-Target that exists before linking!
+
+# New-Item -ItemType SymbolicLink -Path "C:\Users\MussonT\OneDrive - State of Michigan DTMB\Documents\PowerShell\profile" -Target "C:\usr\git\Tims-bits\PSprofile"
+
+Change this to c:\user\mussont\vimfiles...
+
+
+
+# New-Item -ItemType SymbolicLink -Path C:\usr\My.Configs\vimfiles\vimrc -Target C:\usr\My.Configs\vimfiles\vimrc.txt
+				# ^^^-Path to what is being created!     ^^^-Target that exists before linking!
+
+

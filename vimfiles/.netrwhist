@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =3
+let g:netrw_dirhist_3='G:/!.NewWorkstationSetup'
+let g:netrw_dirhist_2='G:\!.NewWorkstationSetup'
+let g:netrw_dirhist_1='C:/Users/MussonT/OneDrive - State of Michigan DTMB/Desktop/txt FilesToSort'
+let g:netrw_dirhist_0='C:\Users\MussonT\OneDrive - State of Michigan DTMB\Desktop\txt FilesToSort'
+let g:netrw_dirhist_9='C:\usr\MySpells'
+let g:netrw_dirhist_8='C:/usr/git/Tims-bits/Links'
+let g:netrw_dirhist_7='C:/usr/git/Tims-bits'
+let g:netrw_dirhist_6='C:/usr/git'
+let g:netrw_dirhist_5='C:/usr'
+let g:netrw_dirhist_4='C:/'

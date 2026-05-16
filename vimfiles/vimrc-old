@@ -1,0 +1,127 @@
+let mapleader = " "
+set nocompatible
+behave mswin
+
+"if     $MyVimRC =='C:\Users\MussonT\AppData\Local\nvim\init.vim'
+    "nVim
+"elseif $MyVimRC =='C:\Users\MussonT\vimfiles\vimrc'
+    "gVim
+    "set columns=100 lines=45
+    "source $VIMRUNTIME/vimrc_example.vim
+    "source $VIMRUNTIME/mswin.vim "adds windows features compatability
+"else
+    "oops
+"endif
+
+if     has("nvim")
+    "nVim
+elseif has("gui_win32")
+    "gVim
+    set columns=100 lines=45
+    source $VIMRUNTIME/vimrc_example.vim
+    source $VIMRUNTIME/mswin.vim "adds windows features compatability
+else
+    "oops
+endif
+
+
+set number
+set nobackup
+set nowrap
+"http://vim.wikia.com/wiki/Searching
+set ignorecase
+set smartcase
+
+colo codedark-tim
+
+set clipboard=unnamed
+
+"replace 'style' with the meta tag
+iab tablestyle <c-r>="<style> table, th, td { border-collapse: collapse; border: 1px solid black; white-space: nowrap; } </style>"<cr>
+
+"replace 'refresh3' with the meta tag
+iab refresh3 <c-r>="<meta http-equiv=refresh content=3;>"<cr>
+
+"replace md5c with md5sum -c %0 &pause&exit
+iab md5c <c-r>=strftime("md5sum -c %%0 &pause&exit")<cr>
+
+"replace DS with 'by Tim Musson 2016-03-03 20160303'
+"iab DS <c-r>=strftime("%Y-%m-%d %Y%m%d")<cr>"
+iab DS <c-r>=strftime("%Y-%m-%d")<cr>
+
+"replace DTS with 2003.08.08 08:55
+iab DTS <c-r>=strftime("%Y.%m.%d %H:%M")<cr>
+
+"replace DIR with dir/b>>%0&exit
+iab DIR <c-r>="dir/b>>%0&exit"<cr>
+":map <F6> /b>>:0&exit " I would rather just insert this bit of text
+
+:map <F5> :!%<CR>		"this runs the current file from the disk
+:map <F10> :%s/ \s\+/	/g<CR>	"This is to replace multiple whitespace chars with tabs
+:map <F12> :!%:p<CR>
+
+":let TidyOutFile = "%temp%\\tidy.txt" can't get this to work...
+:let TidyOutFile = "C:\\temp\\tidy.txt"
+set splitbelow "puts the output of tidy in the bottom window
+"this is what lets us run tidy with =G
+execute 'setlocal equalprg=tidy\ -wrap\ 0\ -iq\ -f\ ' . TidyOutFile
+"run HTML tidy over the current file
+:map <F8> 1G =G :execute "5split" TidyOutFile<CR>
+"    \  / \/ \/ \                  /
+"     ^|   |  |  ^open the output file
+"      |   |  +---run Tidy from cursor to end of file
+"      |   +------goto the first line
+"      +----------map F8 key to the task...
+":map <F8> 1G =G :%s/\r$//<CR> 1G :execute "5split" TidyOutFile<CR>
+
+":let doeswork = expand("%") . ".bak"
+":map <F5> :echo doeswork<CR>
+
+"This one checks to see if the first line has .LOG by itself and if so,
+"adds a dts to the end - good for keeping notes about what happens when.
+"Windows Notepad has this behaviour by default...
+au BufReadPost * call InsCurTimestamp()
+fun InsCurTimestamp()
+  if matchstr(getline(1), "^\.LOG$") != ''
+    exe append(line("$"), strftime("%Y/%m/%d, %H:%M:%S"))
+    exe append(line("$"), "")
+    exe "normal L 0"
+  endif
+endfun
+
+" enable vim-pathogen
+" https://riptutorial.com/vim/example/13780/pathogen
+"	runtime bundle/vim-pathogen/autoload/pathogen.vim
+"	execute pathogen#infect()
+
+" NERDTree config
+nnoremap <silent> <leader>f :NERDTreeToggle<CR>
+nnoremap <silent> <leader>v :NERDTreeFind<CR>
+let NERDTreeQuitOnOpen=1
+let g:NERDTreeWinSize=25
+let NERDTreeShowHidden=1
+let NERDTreeMinimalUI=1
+"let g:NERDTreeDirArrowExpandable = '?'
+"let g:NERDTreeDirArrowCollapsible = '?'
+
+":help swap-file
+"set swapfile
+"set directory="\Temp\vimBackupAndSwap"
+"set backupdir="C:\Temp\vimBackupAndSwap"
+"set undodir="C:\Temp\vimBackupAndSwap"
+
+" setup my directories for swap, undo, etc.
+if !isdirectory($HOME . "/vimfiles/.vimswap")
+    call mkdir($HOME . "/vimfiles/.vimswap", "p")
+endif
+set directory=$HOME/vimfiles/.vimswap
+
+if !isdirectory($HOME . "/vimfiles/.vimundo")
+    call mkdir($HOME . "/vimfiles/.vimundo", "p")
+endif
+set undodir=$HOME/vimfiles/.vimundo
+
+if !isdirectory($HOME . "/vimfiles/.vimbackup")
+    call mkdir($HOME . "/vimfiles/.vimbackup", "p")
+endif
+set backupdir=$HOME/vimfiles/.vimbackup

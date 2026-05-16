@@ -1,0 +1,20 @@
+MS	CMD  2>&1  STDERR to STDOUT
+	contents:ipconfig *.bat
+	Windows+R Shell:Startup
+Chrome	Ctrl+u .....shows source
+	:Lex ...file browse ?
+gVim	/s/+ .....Is all white space
+	/^$ ......is blank lines
+?not?	guG .....All from cursor to EoF to LC
+	:%s/.*/\L&/g ...All to LC
+	:1,7!sort -u ...Sort lines 1-7 / unique
+	# on string highlights it everywhere
+	Folding...
+	   Put cursor on the line you want to start with.
+	   Enter "v" then 'j' until you reach the bottom of the fold.
+	   zf ...now folds it!
+	   vo ...opens the folded text.
+	   vc ...closes it again.
+	:set spell!
+	:echo $myvimrc
+Excel	Ctrl+5 ...strikethrough
